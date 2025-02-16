@@ -1,0 +1,53 @@
+USER
+
+Id (PK)
+name
+username
+email
+profile picture URL
+password (hashed)
+created at
+updated at
+
+NOTE
+
+id (PK)
+user id (FK)
+title
+content
+created at
+updated at
+
+TAG
+
+id (PK)
+tag
+
+NOTE_TAG
+
+id (PK)
+note id (FK)
+tag id (FK)
+
+DRAFT
+
+id (PK)
+note id (FK) UNIQUE
+user id (FK)
+title
+content
+
+DRAFT_TAG
+
+id (PK)
+draft id (FK)
+tag id (FK)
+
+PREFERENCE
+
+id (PK)
+user id (FK)
+theme
+font family
+font size
+

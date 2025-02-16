@@ -1,0 +1,26 @@
+
+user log in/register
+google နဲ့ log in ဝင်လို့ ရမယ်
+log in ဝင်ထားရင် မှတ်ထားမယ်
+အကောင့်ကို 2FA ခံလို့ရမယ်
+forgot password ဘာညာ လုပ်လို့ရမယ်
+
+note အသစ်လုပ်လို့ရမယ်
+note မှာ tag တွေ ထည့်လို့ရမယ်
+note ကို archive လုပ်လို့ရမယ်/ unarchive လုပ်လို့ရမယ်
+note ကို save မလုပ်ဘဲ ပိတ်လိုက်ရင် drafts ထဲကို ရောက်မယ်
+delete လုပ်လို့ရမယ်
+Readonly အနေနဲ့လည်း share ပေးလို့ရမယ်
+note တစ်ခုချင်းစီမှာ privacy settings ပါမယ်
+search bar ပါမယ် (tag-based, title-based, content-based)
+note ကို pin လုပ်လို့ရမယ်
+note ကို export လုပ်လို့ရမယ် (.pdf, .txt, etc...)
+
+responsive design ရမယ်
+single-page ဖြစ်မယ်
+theme ပြောင်းလို့ရမယ်
+layout panel တွေကို resize လုပ်လို့ရမယ် 
+font family/ font size ပြောင်းလို့ရမယ် (globally)
+ 
+
+
