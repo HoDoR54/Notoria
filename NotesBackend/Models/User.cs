@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace NotesBackend.Models
 {
-    public class User: IdentityUser
+    public class User
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -27,8 +26,8 @@ namespace NotesBackend.Models
 
         public DateTime? UpdatedAt { get; set; }
 
-        public List<Note> Notes { get; set; } = new List<Note>();
+        public List<Note>? Notes { get; set; } = new List<Note>();
 
-        public Preference Preference { get; set; } = new Preference();
+        public Preference? Preference { get; set; } = new Preference();
     }
 }
