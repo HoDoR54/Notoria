@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace NotesBackend.Models
 {
@@ -10,7 +11,7 @@ namespace NotesBackend.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public string Title { get; set; }  = string.Empty;
+        public string Title { get; set; } = string.Empty;
 
         public string Content { get; set; } = string.Empty;
 
@@ -20,14 +21,15 @@ namespace NotesBackend.Models
 
         public DateTime? UpdatedAt { get; set; }
 
-        [Required]
-        public List<NoteTag> NoteTags { get; set; } = [];
-        public Guid? DraftId { get; set; }
+        [JsonIgnore]
+        public List<NoteTag> NoteTags { get; set; } = new();
+
         public Draft? Draft { get; set; }
 
         [Required]
+        [ForeignKey("User")]
         public Guid UserId { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

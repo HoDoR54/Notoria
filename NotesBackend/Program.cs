@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotesBackend.Data;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,11 @@ builder.Services.AddDbContext<NotesDbContext>(options =>
 });
 
 // Add services to the container
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 // Register JwtTokenHelper before building the app
 builder.Services.AddSingleton<JwtTokenHelper>();

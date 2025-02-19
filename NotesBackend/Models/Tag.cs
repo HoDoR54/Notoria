@@ -9,9 +9,8 @@ namespace NotesBackend.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        public string TagName {  get; set; } = string.Empty;
+        public string TagName { get; set; } = string.Empty;
 
-        [Required]
-        public List<NoteTag> NoteTags { get; set; }
+        public List<NoteTag> NoteTags { get; set; } = new();
     }
 }
