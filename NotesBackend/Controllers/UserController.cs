@@ -70,5 +70,58 @@ namespace NotesBackend.Controllers
 
             return Ok(response);
         }
+
+        // Delete Account
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAcc([FromRoute] Guid id)
+        {
+            var matchedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (matchedUser == null)
+            {
+                return NotFound("No user found");
+            }
+
+            _context.Users.Remove(matchedUser);
+            await _context.SaveChangesAsync();
+
+            return Ok("Account deleted successfully");
+        }
+
+        // Update Account Details
+        [HttpPut("update/{memberToUpdate}")]
+        public async Task<IActionResult> UpdateAcc([FromBody] UserUpdateRequest request, [FromRoute] string memberToUpdate)
+        {
+            var matchedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id ==  request.Id);
+            if (matchedUser == null)
+            {
+                return NotFound("User not found");
+            }
+
+            string updateParameter = memberToUpdate.ToLower();
+
+            switch (updateParameter)
+            {
+                case "name":
+                    matchedUser.Name = request.Name;
+                    break;
+                case "email":
+                    matchedUser.Email = request.Email;
+                    break;
+                case "password": 
+                    matchedUser.Password = request.Password;
+                    break;
+                case "profilePic":
+                    matchedUser.ProfilePicUrl = request.ProfilePicUrl;
+                    break;
+                default:
+                    return BadRequest("Invalid parameter.");
+            }
+
+            matchedUser.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return Ok($"{updateParameter} updated succcessfully");
+        }
     }
 }
