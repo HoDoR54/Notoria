@@ -28,6 +28,6 @@ namespace NotesBackend.Models
 
         public List<Note> Notes { get; set; } = [];
 
-        public Preference? Preference { get; set; } = new Preference();
+        public Preference? Preference { get; set; }
     }
 }
