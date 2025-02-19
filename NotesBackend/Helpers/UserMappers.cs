@@ -20,9 +20,9 @@ namespace NotesBackend.Helpers
             return mappedUser;
         }
 
-        public static UserRegisterResponse UserToRegisResponse (User user)
+        public static UserResponse ToUserResponse (User user)
         {
-            UserRegisterResponse response = new UserRegisterResponse
+            UserResponse response = new UserResponse
             {
                 Id = user.Id,
                 Name = user.Name,
