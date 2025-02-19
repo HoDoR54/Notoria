@@ -21,7 +21,7 @@ namespace NotesBackend.Models
         public DateTime? UpdatedAt { get; set; }
 
         [Required]
-        public ICollection<NoteTag> NoteTags { get; set; }
+        public List<NoteTag> NoteTags { get; set; } = [];
 
         public Draft? Draft { get; set; }
     }
