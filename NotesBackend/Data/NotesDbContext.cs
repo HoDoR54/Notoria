@@ -34,6 +34,19 @@ namespace NotesBackend.Data
                 .WithMany(t => t.NoteTags)
                 .HasForeignKey(nt => nt.TagId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+               .HasOne(u => u.Preference)
+               .WithOne(p => p.User)
+               .HasForeignKey<Preference>(p => p.UserId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Note>()
+                .HasOne(n => n.Draft)
+                .WithOne(d => d.Note)
+                .HasForeignKey<Draft>(d => d.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

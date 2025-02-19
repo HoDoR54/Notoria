@@ -27,5 +27,8 @@ namespace NotesBackend.Models
         public FontFam FontFam { get; set; } = FontFam.Arial;
 
         public int? FontSize { get; set; }
+
+        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }

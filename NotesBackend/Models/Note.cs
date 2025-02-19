@@ -22,7 +22,12 @@ namespace NotesBackend.Models
 
         [Required]
         public List<NoteTag> NoteTags { get; set; } = [];
-
+        public Guid? DraftId { get; set; }
         public Draft? Draft { get; set; }
+
+        [Required]
+        public Guid UserId { get; set; }
+
+        public User User { get; set; }
     }
 }

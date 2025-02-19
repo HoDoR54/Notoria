@@ -26,7 +26,7 @@ namespace NotesBackend.Models
 
         public DateTime? UpdatedAt { get; set; }
 
-        public List<Note>? Notes { get; set; } = new List<Note>();
+        public List<Note> Notes { get; set; } = [];
 
         public Preference? Preference { get; set; } = new Preference();
     }

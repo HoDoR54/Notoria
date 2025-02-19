@@ -12,6 +12,6 @@ namespace NotesBackend.Models
         public string TagName {  get; set; } = string.Empty;
 
         [Required]
-        public ICollection<NoteTag> NoteTags { get; set; }
+        public List<NoteTag> NoteTags { get; set; }
     }
 }
