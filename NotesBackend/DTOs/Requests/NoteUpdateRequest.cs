@@ -2,11 +2,11 @@
 
 namespace NotesBackend.DTOs.Requests
 {
-    public class NoteCreateRequest
+    public class NoteUpdateRequest
     {
+        public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
-        public List<TagCreateRequest> Tags { get; set; } = new List<TagCreateRequest>();
-        public Guid UserId { get; set; }
+        public List<TagUpdateRequest> Tags { get; set; } = new List<TagUpdateRequest>();
     }
 }

@@ -6,7 +6,7 @@ namespace NotesBackend.Helpers
 {
     public class NoteMappers
     {
-        public static Note NewNoteToNoteModel (NoteCreateRequest request)
+        public static Note NewNoteToNoteModel(NoteCreateRequest request)
         {
             Note note = new Note
             {
@@ -17,18 +17,26 @@ namespace NotesBackend.Helpers
             return note;
         }
 
-        public static NoteCreateResponse ToNewNoteResponse (Note request)
+        public static NoteCreateResponse ToNewNoteResponse(Note request)
         {
             NoteCreateResponse note = new NoteCreateResponse
             {
                 Id = request.Id,
                 Title = request.Title,
                 Content = request.Content,
-                UserId = request.UserId,
                 IsArchived = request.IsArchived,
                 CreatedAt = request.CreatedAt,
                 UpdatedAt = request.UpdatedAt,
-                NoteTags = request.NoteTags,
+            };
+            return note;
+        }
+
+        public static Note FromUpdateReqToNoteModel(NoteUpdateRequest request)
+        {
+            Note note = new Note
+            {
+                Title = request.Title,
+                Content = request.Content,
             };
             return note;
         }

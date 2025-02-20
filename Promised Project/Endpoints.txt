@@ -1,40 +1,6 @@
-NOTES
+User Registration that returns necessary user data and a JWT token [POST]
+User Log in returning a new JWT [POST]
+Delete account permanently [Delete]
+Update user details [PUT]
 
-get unarchived notes (when app starts) (GET)
-get archived notes
-delete a note (DELETE)
-update a note (PUT)
-add a new note (POST)
-archive a note by id
-unarchive a note by id
-
-DRAFTS 
-
-send unsaved note to drafts (POST)
-remove from drafts (DELETE)
-
-USER 
-
-make a user registration (POST) --done
-log in (POST) -- done
-update user details (PUT) -- done
-delete acc (DELETE) -- done
-get user's info for page load -- done
-
-TAG
-
-create a new tag
-get all tags
-update a tag
-delete a tag by id
-
-NOTETAG 
-
-create a note-tag connection
-remove a note-tag connection
-
-PREFERENCE
-
-get preference by user id
-update preference
-set preference to default
+Add a new note with tags [POST]

@@ -89,7 +89,7 @@ namespace NotesBackend.Controllers
         }
 
         // Update Account Details
-        [HttpPut("update/{memberToUpdate}")]
+        [HttpPut("update/{updateField}")]
         public async Task<IActionResult> UpdateAcc([FromBody] UserUpdateRequest request, [FromRoute] string memberToUpdate)
         {
             var matchedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id ==  request.Id);
