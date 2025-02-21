@@ -1,11 +1,11 @@
-import { RegistrationRequest } from "../Types/UserFormTypes";
+import { RegistrationRequest, UserResponse } from "../Types/userFormTypes";
 import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { regisReqValidationSchema } from "../Services/formAuth";
-import PrimaryButton from "../Components/PrimaryButton";
-import { UserResponse } from "../Types/UserFormTypes";
+import Button from "../Components/Button";
+import InputField from "../Components/InputField";
 
 const UserRegistration = () => {
   const [currentUser, setCurrentUser] = useState<UserResponse>();
@@ -15,18 +15,23 @@ const UserRegistration = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegistrationRequest>({
     resolver: yupResolver(regisReqValidationSchema),
   });
 
   const onSubmit = async (data: RegistrationRequest) => {
-    const fetchedData = await fetchData(data.name, data.email, data.password);
-    console.log("Response Data:", fetchedData);
+    const fetchedData = await fetchRegistrationData(
+      data.name,
+      data.email,
+      data.password
+    );
     setCurrentUser(fetchedData);
+    reset();
   };
 
-  const fetchData = async (
+  const fetchRegistrationData = async (
     nameInput: string,
     emailInput: string,
     passwordInput: string
@@ -59,60 +64,56 @@ const UserRegistration = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-center justify-center gap-3"
+      className="flex flex-col items-center justify-center gap-3 rounded-lg shadow-xl border-2 border-gray-100 py-10 px-8"
     >
-      <h1 className="text-xl font-semibold">Create an account</h1>
+      <h1 className="text-xl font-semibold">Welcome to Notoria</h1>
 
-      {/* name field */}
-      <div className="flex flex-col gap-1">
-        <label htmlFor="name" className="text-base font-thin">
-          Full name:
-        </label>
-        <input
-          type="text"
-          id="name"
-          placeholder="e.g. Hpone Tauk Nyi"
-          {...register("name")}
-          className="border-1 rounded-md pr-2 py-1 pl-3 min-w-[300px]"
-        />
-        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+      <InputField
+        label="Full name:"
+        type="text"
+        id="name"
+        register={register}
+        error={errors.name}
+        placeholder="e.g. Hpone Tauk Nyi"
+      />
+      <InputField
+        label="Email:"
+        type="email"
+        id="email"
+        register={register}
+        error={errors.email}
+        placeholder="e.g. hponetaukyou@gmail.com"
+      />
+      <InputField
+        label="Password:"
+        type="password"
+        id="password"
+        register={register}
+        error={errors.password}
+        placeholder="e.g. sigmaTauk007#!@"
+      />
+
+      <Button additionalStyling="w-full my-3" primary={true} type="submit">
+        Sign Up
+      </Button>
+
+      <div className="flex items-center w-full py-2">
+        <div className="flex-1 h-[0.5px] bg-gray-500" />
+        <span className="px-3 text-gray-600 text-sm">OR</span>
+        <div className="flex-1 h-[0.5px] bg-gray-500" />
       </div>
 
-      {/* email field */}
-      <div className="flex flex-col gap-1">
-        <label htmlFor="email" className="text-base font-thin">
-          Email:
-        </label>
-        <input
-          type="email"
-          id="email"
-          placeholder="e.g. Hpone Tauk Nyi"
-          {...register("email")}
-          className="border-1 rounded-md pr-2 py-1 pl-3 min-w-[300px]"
-        />
-        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-      </div>
+      <Button primary={false} type="button" additionalStyling="w-full my-3">
+        <i className="fa-brands fa-google mx-3"></i>
+        <span>Sign up with google</span>
+      </Button>
 
-      {/* password field */}
-      <div className="flex flex-col gap-1">
-        <label htmlFor="password" className="text-base font-thin">
-          Password:
-        </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="e.g. sigmaTauk007#!@"
-          {...register("password")}
-          className="border-1 rounded-md pr-2 py-1 pl-3 min-w-[300px]"
-        />
-        {errors.password && (
-          <p className="text-red-500">{errors.password.message}</p>
-        )}
-      </div>
-
-      <div className="flex items-center justify-end w-full">
-        <PrimaryButton text="Sign up" />
-      </div>
+      <p className="text-blue-950 text-sm">
+        Already have an account?{" "}
+        <span className="font-semibold hover:underline hover:text-orange-600 cursor-pointer">
+          Log in
+        </span>
+      </p>
     </form>
   );
 };

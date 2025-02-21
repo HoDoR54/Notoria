@@ -109,7 +109,7 @@ namespace NotesBackend.Controllers
                     matchedUser.Email = request.Email;
                     break;
                 case "password": 
-                    matchedUser.Password = request.Password;
+                    matchedUser.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
                     break;
                 case "profilePic":
                     matchedUser.ProfilePicUrl = request.ProfilePicUrl;
