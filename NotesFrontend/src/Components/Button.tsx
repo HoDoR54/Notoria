@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       type={type}
-      className={`px-4 py-2 rounded-md hover:brightness-90 active:brightness-100 cursor-pointer ${
+      className={`px-4 py-2 box-border rounded-md hover:brightness-90 active:brightness-100 cursor-pointer ${
         primary
           ? "bg-blue-950 text-white"
           : "bg-gray-200 text-blue-950 border-1"

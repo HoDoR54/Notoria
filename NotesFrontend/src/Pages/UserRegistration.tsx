@@ -1,16 +1,24 @@
 import { RegistrationRequest, UserResponse } from "../Types/userFormTypes";
-import axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { regisReqValidationSchema } from "../Services/formAuth";
 import Button from "../Components/Button";
 import InputField from "../Components/InputField";
+import { Link, useNavigate } from "react-router-dom";
+import { fetchRegistrationData } from "../Services/fetchUser";
+import { useDispatch } from "react-redux";
+import FormWrapper from "../Components/FormWrapper";
+import { setLoading } from "../Redux/slices/uiSlice";
 
 const UserRegistration = () => {
-  const [currentUser, setCurrentUser] = useState<UserResponse>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [_, setCurrentUser] = useState<UserResponse | null>(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const goToRoute = (route: string, data?: any) => {
+    navigate(route, { state: data });
+  };
 
   const {
     register,
@@ -22,50 +30,24 @@ const UserRegistration = () => {
   });
 
   const onSubmit = async (data: RegistrationRequest) => {
+    dispatch(setLoading(true));
     const fetchedData = await fetchRegistrationData(
+      dispatch,
       data.name,
       data.email,
       data.password
     );
-    setCurrentUser(fetchedData);
-    reset();
-  };
+    dispatch(setLoading(false));
 
-  const fetchRegistrationData = async (
-    nameInput: string,
-    emailInput: string,
-    passwordInput: string
-  ) => {
-    setLoading(true);
-    const url = "https://localhost:7060/api/users/register";
-    const requestBody: RegistrationRequest = {
-      name: nameInput,
-      email: emailInput,
-      password: passwordInput,
-      profilePicUrl: null,
-    };
-    try {
-      const response = await axios.post(url, requestBody);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Axios error:", error.response?.data || error.message);
-        setError(error.response?.data || "An error occurred");
-      } else {
-        console.error("Unexpected error:", error);
-        setError("An unexpected error occurred");
-      }
-      return "Failed";
-    } finally {
-      setLoading(false);
+    if (fetchedData !== "Failed") {
+      setCurrentUser(fetchedData);
+      reset();
+      goToRoute("/dashboard", { user: fetchedData });
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col items-center justify-center gap-3 rounded-lg shadow-xl border-2 border-gray-100 py-10 px-8"
-    >
+    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-xl font-semibold">Welcome to Notoria</h1>
 
       <InputField
@@ -105,16 +87,18 @@ const UserRegistration = () => {
 
       <Button primary={false} type="button" additionalStyling="w-full my-3">
         <i className="fa-brands fa-google mx-3"></i>
-        <span>Sign up with google</span>
+        <span>Sign up with google (not yet)</span>
       </Button>
 
       <p className="text-blue-950 text-sm">
         Already have an account?{" "}
-        <span className="font-semibold hover:underline hover:text-orange-600 cursor-pointer">
-          Log in
-        </span>
+        <Link to={"/login"}>
+          <span className="font-semibold hover:underline hover:text-orange-600 cursor-pointer">
+            Log in
+          </span>
+        </Link>
       </p>
-    </form>
+    </FormWrapper>
   );
 };
 

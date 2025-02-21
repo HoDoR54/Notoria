@@ -5,7 +5,7 @@ export interface Preference {
   fontSize?: number | null;
 }
 
-enum Theme {
+export enum Theme {
   Dark = "dark",
   Light = "light",
   Happy = "happy",
