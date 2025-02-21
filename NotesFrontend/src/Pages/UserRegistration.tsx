@@ -9,16 +9,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchRegistrationData } from "../Services/fetchUser";
 import { useDispatch } from "react-redux";
 import FormWrapper from "../Components/FormWrapper";
-import { setLoading } from "../Redux/slices/uiSlice";
+import { goToRoute } from "../Utils/routingUtils";
 
 const UserRegistration = () => {
   const [_, setCurrentUser] = useState<UserResponse | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const goToRoute = (route: string, data?: any) => {
-    navigate(route, { state: data });
-  };
 
   const {
     register,
@@ -30,26 +26,22 @@ const UserRegistration = () => {
   });
 
   const onSubmit = async (data: RegistrationRequest) => {
-    dispatch(setLoading(true));
     const fetchedData = await fetchRegistrationData(
       dispatch,
       data.name,
       data.email,
       data.password
     );
-    dispatch(setLoading(false));
 
-    if (fetchedData !== "Failed") {
+    if (fetchedData.status !== "Failed") {
       setCurrentUser(fetchedData);
       reset();
-      goToRoute("/dashboard", { user: fetchedData });
+      goToRoute("/dashboard", { user: fetchedData }, navigate);
     }
   };
 
   return (
-    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-      <h1 className="text-xl font-semibold">Welcome to Notoria</h1>
-
+    <FormWrapper onSubmit={handleSubmit(onSubmit)} title="Welcome to Notoria">
       <InputField
         label="Full name:"
         type="text"

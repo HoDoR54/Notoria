@@ -7,6 +7,11 @@ export interface RegistrationRequest {
   profilePicUrl?: string | null;
 }
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
 export interface UserResponse {
   id: string;
   name: string;

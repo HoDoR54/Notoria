@@ -6,7 +6,7 @@ interface InputFieldProps {
   label: string;
   type: string;
   id: keyof RegistrationRequest;
-  register: UseFormRegister<RegistrationRequest>;
+  register: UseFormRegister<any>;
   error?: FieldError;
   placeholder: string;
 }
@@ -28,7 +28,7 @@ const InputField: React.FC<InputFieldProps> = ({
         type={type}
         id={id}
         placeholder={placeholder}
-        {...register(id)} // Registering input correctly
+        {...register(id)}
         className="border-1 rounded-md px-3 py-2 pl-3 min-w-[300px]"
       />
       {error && <p className="text-red-500">{error.message}</p>}

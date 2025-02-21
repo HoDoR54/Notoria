@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -57,8 +58,10 @@ namespace NotesBackend.Controllers
             {
                 return NotFound("No user with this email is found.");
             }
-            
-            if (matchedUser != null && matchedUser.Password !=  request.Password)
+
+            bool isPasswordCorrect = BCrypt.Net.BCrypt.Verify(request.Password, matchedUser.Password);
+
+            if (!isPasswordCorrect)
             {
                 return BadRequest("Wrong password");
             }
