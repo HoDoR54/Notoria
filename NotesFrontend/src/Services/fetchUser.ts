@@ -17,7 +17,9 @@ export const fetchRegistrationData = async (
   };
   try {
     dispatch(setLoading(true));
-    const response = await axios.post(url, requestBody);
+    const response = await axios.post(url, requestBody, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -46,7 +48,10 @@ export const fetchLoginData = async (
 
   try {
     dispatch(setLoading(true));
-    const response = await axios.post(url, requestBody);
+    const response = await axios.post(url, requestBody, {
+      withCredentials: true,
+    });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -59,5 +64,18 @@ export const fetchLoginData = async (
     return "Failed";
   } finally {
     dispatch(setLoading(false));
+  }
+};
+
+export const checkAuthentication = async () => {
+  try {
+    const url = "https://localhost:7060/api/users/auth";
+    const response = await axios.get(url, {
+      withCredentials: true,
+    });
+
+    return response.data.valid;
+  } catch (error) {
+    return false;
   }
 };

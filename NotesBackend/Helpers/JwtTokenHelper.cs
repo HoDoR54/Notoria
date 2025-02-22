@@ -10,15 +10,16 @@ public class JwtTokenHelper
 {
     private readonly string _secretKey;
 
-    public JwtTokenHelper(IConfiguration configuration)
+    public JwtTokenHelper (IConfiguration configuration)
     {
-        _secretKey = configuration["JwtSettings:SecretKey"];
+        _secretKey = configuration["Jwt:Key"];
     }
 
     public string GetSecretKey()
     {
         return _secretKey;
     }
+
 
     public string GenerateToken(User user)
     {

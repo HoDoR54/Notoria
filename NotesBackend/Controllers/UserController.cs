@@ -7,6 +7,7 @@ using NotesBackend.Data;
 using NotesBackend.DTOs.Requests;
 using NotesBackend.Helpers;
 using NotesBackend.Models;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace NotesBackend.Controllers
 {
@@ -39,11 +40,13 @@ namespace NotesBackend.Controllers
 
             var mappedUser = UserMappers.RegisterToUser(request);
             string token = _jwtHelper.GenerateToken(mappedUser);
+
+            CookiesHelper.SetTokenCookie(Response, token);
+
             await _context.Users.AddAsync(mappedUser);
             await _context.SaveChangesAsync();
 
             var response = UserMappers.ToUserResponse(mappedUser);
-            response.Token = token;
 
 
             return Ok(response);
@@ -68,11 +71,49 @@ namespace NotesBackend.Controllers
 
             string token = _jwtHelper.GenerateToken(matchedUser);
 
+            CookiesHelper.SetTokenCookie(Response, token);
+
             var response = UserMappers.ToUserResponse(matchedUser);
-            response.Token = token;
 
             return Ok(response);
         }
+
+        [HttpGet("auth")]
+        public IActionResult ValidateToken()
+        {
+            try
+            {
+                var token = Request.Cookies["access_token"];
+                if (string.IsNullOrEmpty(token))
+                {
+                    return Unauthorized(new { valid = false, message = "No authentication token found" });
+                }
+
+                var handler = new JwtSecurityTokenHandler();
+
+                if (!handler.CanReadToken(token))
+                {
+                    CookiesHelper.RemoveTokenCookie(Response);
+                    return Unauthorized(new { valid = false, message = "Invalid token format" });
+                }
+
+                var jwtToken = handler.ReadJwtToken(token);
+
+                if (jwtToken.ValidTo < DateTime.UtcNow)
+                {
+                    CookiesHelper.RemoveTokenCookie(Response);
+                    return Unauthorized(new { valid = false, message = "Token has expired" });
+                }
+
+                return Ok(new { valid = true });
+            }
+            catch (Exception)
+            {
+                CookiesHelper.RemoveTokenCookie(Response);
+                return Unauthorized(new { valid = false, message = "Invalid token" });
+            }
+        }
+
 
         // Delete Account
         [HttpDelete("{id}")]
@@ -89,6 +130,13 @@ namespace NotesBackend.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Account deleted successfully");
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            CookiesHelper.RemoveTokenCookie(Response);
+            return Ok(new { message = "Logged out successfully" });
         }
 
         // Update Account Details

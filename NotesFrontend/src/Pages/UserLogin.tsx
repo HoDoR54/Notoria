@@ -12,6 +12,7 @@ import Button from "../Components/Button";
 import { Link } from "react-router-dom";
 import { goToRoute } from "../Utils/routingUtils";
 import { useNavigate } from "react-router-dom";
+import { setIsLoggedIn } from "../Redux/slices/logInStatusSlice";
 
 const UserLogin = () => {
   const [_, setCurrentUser] = useState<UserResponse | null>(null);
@@ -37,7 +38,8 @@ const UserLogin = () => {
     if (fetchedData !== "Failed") {
       reset();
       setCurrentUser(fetchedData);
-      goToRoute("/dashboard", { user: fetchedData }, navigate);
+      dispatch(setIsLoggedIn(true));
+      goToRoute("/", { user: fetchedData }, navigate);
     }
   };
   return (
@@ -79,7 +81,7 @@ const UserLogin = () => {
 
       <p className="text-blue-950 text-sm">
         Don't have an account?{" "}
-        <Link to={"/"}>
+        <Link to={"/registration"}>
           <span className="font-semibold hover:underline hover:text-orange-600 cursor-pointer">
             Sign up
           </span>

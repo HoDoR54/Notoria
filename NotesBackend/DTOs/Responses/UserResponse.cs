@@ -12,6 +12,5 @@ namespace NotesBackend.DTOs.Responses
         public DateTime? UpdatedAt { get; set; }
         public List<Note> Notes { get; set; } = [];
         public Preference? Preference { get; set; } = new Preference();
-        public string Token { get; set; } = string.Empty;
     }
 }

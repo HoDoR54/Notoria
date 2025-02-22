@@ -36,7 +36,7 @@ const UserRegistration = () => {
     if (fetchedData.status !== "Failed") {
       setCurrentUser(fetchedData);
       reset();
-      goToRoute("/dashboard", { user: fetchedData }, navigate);
+      goToRoute("/", { user: fetchedData }, navigate);
     }
   };
 

@@ -20,5 +20,4 @@ export interface UserResponse {
   updatedAt?: string | null;
   notes?: string[];
   preference?: Preference | null;
-  token: string;
 }
