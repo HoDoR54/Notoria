@@ -5,14 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginReqValidationSchema } from "../Services/formAuth";
 import InputField from "../Components/InputField";
 import { useDispatch } from "react-redux";
-import { fetchLoginData } from "../Services/fetchUser";
+import { fetchLoginData } from "../Services/fetchAuth";
 import { useState } from "react";
 import { UserResponse } from "../Types/userFormTypes";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom";
 import { goToRoute } from "../Utils/routingUtils";
 import { useNavigate } from "react-router-dom";
-import { setIsLoggedIn } from "../Redux/slices/logInStatusSlice";
 
 const UserLogin = () => {
   const [_, setCurrentUser] = useState<UserResponse | null>(null);
@@ -38,10 +37,10 @@ const UserLogin = () => {
     if (fetchedData !== "Failed") {
       reset();
       setCurrentUser(fetchedData);
-      dispatch(setIsLoggedIn(true));
       goToRoute("/", { user: fetchedData }, navigate);
     }
   };
+
   return (
     <FormWrapper
       onSubmit={handleSubmit(onSubmit)}

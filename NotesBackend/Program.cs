@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotesBackend.Data;
+using NotesBackend.Helpers;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddControllers()
 
 // Register JwtTokenHelper before building the app
 builder.Services.AddSingleton<JwtTokenHelper>();
+builder.Services.AddScoped<CookiesHelper>();
 
 // Swagger/OpenAPI configuration
 builder.Services.AddEndpointsApiExplorer();
@@ -29,10 +31,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000/")
-                  .AllowCredentials()
+            policy.WithOrigins("http://localhost:4000")
+                  .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowAnyHeader();
+                  .AllowCredentials();
         });
 });
 

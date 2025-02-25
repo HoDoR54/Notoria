@@ -1,16 +1,12 @@
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../Redux/store";
 
 const Dashboard = () => {
-  const location = useLocation();
-  const data = location.state || {};
+  const { currentUser } = useSelector((state: RootState) => state.currentUser);
 
-  console.log("Dashboard received data:", data);
+  console.log("Dashboard received data:", currentUser);
 
-  return (
-    <div>
-      <h1>Welcome, {data.user?.name || "Guest"}!</h1>
-    </div>
-  );
+  return <h1>Welcome, {currentUser?.name || "Guest"}!</h1>;
 };
 
 export default Dashboard;

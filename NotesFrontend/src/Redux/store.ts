@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./slices/themeSlice";
 import uiReducer from "./slices/uiSlice";
-import logInStatusReducer from "./slices/logInStatusSlice";
+import currentUserReducer from "./slices/currentUserSlice";
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     ui: uiReducer,
-    loginStatus: logInStatusReducer,
+    currentUser: currentUserReducer,
   },
 });
 

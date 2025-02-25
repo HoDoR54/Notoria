@@ -2,13 +2,14 @@ import axios from "axios";
 import { LoginRequest, RegistrationRequest } from "../Types/userFormTypes";
 import { setError, setLoading } from "../Redux/slices/uiSlice";
 
+const baseUrl = "https://localhost:7000/api/auth";
+
 export const fetchRegistrationData = async (
   dispatch: Function,
   nameInput: string,
   emailInput: string,
   passwordInput: string
 ) => {
-  const url = "https://localhost:7060/api/users/register";
   const requestBody: RegistrationRequest = {
     name: nameInput,
     email: emailInput,
@@ -17,7 +18,7 @@ export const fetchRegistrationData = async (
   };
   try {
     dispatch(setLoading(true));
-    const response = await axios.post(url, requestBody, {
+    const response = await axios.post(`${baseUrl}/register`, requestBody, {
       withCredentials: true,
     });
     return response.data;
@@ -40,7 +41,6 @@ export const fetchLoginData = async (
   emailInput: string,
   passwordInput: string
 ) => {
-  const url = "https://localhost:7060/api/users/login";
   const requestBody: LoginRequest = {
     email: emailInput,
     password: passwordInput,
@@ -48,10 +48,9 @@ export const fetchLoginData = async (
 
   try {
     dispatch(setLoading(true));
-    const response = await axios.post(url, requestBody, {
+    const response = await axios.post(`${baseUrl}/login`, requestBody, {
       withCredentials: true,
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -67,15 +66,27 @@ export const fetchLoginData = async (
   }
 };
 
-export const checkAuthentication = async () => {
+export const authenticateUser = async (dispatch: Function) => {
   try {
-    const url = "https://localhost:7060/api/users/auth";
-    const response = await axios.get(url, {
-      withCredentials: true,
-    });
-
-    return response.data.valid;
+    const response = await axios.post(
+      `${baseUrl}/authenticate`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response.data);
+    return response.data;
   } catch (error) {
-    return false;
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data || error.message);
+      dispatch(setError(error.response?.data || "An error occurred"));
+    } else {
+      console.error("Unexpected error:", error);
+      dispatch(setError("An unexpected error occurred"));
+    }
+    return "Failed";
+  } finally {
+    dispatch(setLoading(false));
   }
 };

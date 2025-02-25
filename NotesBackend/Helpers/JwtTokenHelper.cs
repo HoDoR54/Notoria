@@ -21,7 +21,7 @@ public class JwtTokenHelper
     }
 
 
-    public string GenerateToken(User user)
+    public string GenerateToken(User user, bool isAccessToken)
     {
         var claims = new[]
         {
@@ -29,6 +29,7 @@ public class JwtTokenHelper
             new Claim(ClaimTypes.Email, user.Email)
         };
 
+        DateTime exipiresAt = isAccessToken ? DateTime.UtcNow.AddDays(7) : DateTime.UtcNow.AddMinutes(15);
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -36,7 +37,7 @@ public class JwtTokenHelper
             issuer: "https://localhost:7060/",
             audience: "https://localhost:7060",
             claims: claims,
-            expires: DateTime.Now.AddHours(1),
+            expires: exipiresAt,
             signingCredentials: credentials
         );
 

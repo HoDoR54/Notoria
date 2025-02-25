@@ -14,6 +14,7 @@ namespace NotesBackend.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<Draft> Drafts { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,6 +46,12 @@ namespace NotesBackend.Data
                 .HasOne(n => n.Draft)
                 .WithOne(d => d.Note)
                 .HasForeignKey<Draft>(d => d.NoteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<RefreshToken>()
+                .HasOne(rt => rt.User)
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

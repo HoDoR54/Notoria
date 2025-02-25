@@ -51,3 +51,11 @@ theme
 font family
 font size
 
+REFRESH_TOKEN
+
+id (PK)
+user id (FK)
+token
+expires at
+created at
+isrevoked

@@ -6,7 +6,7 @@ import { regisReqValidationSchema } from "../Services/formAuth";
 import Button from "../Components/Button";
 import InputField from "../Components/InputField";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchRegistrationData } from "../Services/fetchUser";
+import { fetchRegistrationData } from "../Services/fetchAuth";
 import { useDispatch } from "react-redux";
 import FormWrapper from "../Components/FormWrapper";
 import { goToRoute } from "../Utils/routingUtils";

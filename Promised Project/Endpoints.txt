@@ -1,6 +1,5 @@
-User Registration that returns necessary user data and a JWT token [POST]
-User Log in returning a new JWT [POST]
-Delete account permanently [Delete]
-Update user details [PUT]
+AUTHENTICATION 
 
-Add a new note with tags [POST]
+Log in endpoint that set cookies [POST]
+Sign up endpoint ... [POST]
+User authentication endpoint for checking if the user is logged in or not
