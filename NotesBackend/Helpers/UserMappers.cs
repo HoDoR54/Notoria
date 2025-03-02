@@ -15,7 +15,6 @@ namespace NotesBackend.Helpers
                 Name = request.Name,
                 Email = request.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                ProfilePicUrl = request.ProfilePicUrl,
             };
             return mappedUser;
         }

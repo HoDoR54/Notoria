@@ -6,15 +6,11 @@ import { loginReqValidationSchema } from "../Services/formAuth";
 import InputField from "../Components/InputField";
 import { useDispatch } from "react-redux";
 import { fetchLoginData } from "../Services/fetchAuth";
-import { useState } from "react";
-import { UserResponse } from "../Types/userFormTypes";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom";
-import { goToRoute } from "../Utils/routingUtils";
 import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
-  const [_, setCurrentUser] = useState<UserResponse | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,12 +29,11 @@ const UserLogin = () => {
       data.email,
       data.password
     );
+    console.log("Logged In...");
 
-    if (fetchedData !== "Failed") {
-      reset();
-      setCurrentUser(fetchedData);
-      goToRoute("/", { user: fetchedData }, navigate);
-    }
+    reset();
+    fetchedData !== false && navigate("/");
+    fetchedData !== false && console.log("Routed to dashboard");
   };
 
   return (

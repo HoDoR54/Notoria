@@ -1,6 +1,5 @@
-import { RegistrationRequest, UserResponse } from "../Types/userFormTypes";
+import { RegistrationRequest } from "../Types/userFormTypes";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { regisReqValidationSchema } from "../Services/formAuth";
 import Button from "../Components/Button";
@@ -9,10 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchRegistrationData } from "../Services/fetchAuth";
 import { useDispatch } from "react-redux";
 import FormWrapper from "../Components/FormWrapper";
-import { goToRoute } from "../Utils/routingUtils";
 
 const UserRegistration = () => {
-  const [_, setCurrentUser] = useState<UserResponse | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,11 +30,8 @@ const UserRegistration = () => {
       data.password
     );
 
-    if (fetchedData.status !== "Failed") {
-      setCurrentUser(fetchedData);
-      reset();
-      goToRoute("/", { user: fetchedData }, navigate);
-    }
+    reset();
+    fetchedData !== false && navigate("/");
   };
 
   return (
