@@ -212,10 +212,5 @@ namespace NotesBackend.Controllers
             await _context.SaveChangesAsync();
             return Ok(NoteMappers.ToNoteResponse(note));
         }
-
-        // create a draft (draft controller)        
-        // get all drafts (draft controller)
-        // delete the draft and save it as a note (draft controller)
-
     }
 }
