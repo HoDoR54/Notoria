@@ -58,99 +58,164 @@ namespace NotesBackend.Controllers
             await _context.SaveChangesAsync();
 
             var response = NoteMappers.ToNewNoteResponse(mappedNote);
+            response.Tags = allTags.Select(at => new DTOs.Responses.TagResponse { Id = at.Id, TagName = at.TagName }).ToList();
             return Ok(response);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> SaveNoteChanges([FromBody] NoteUpdateRequest request)
+        // get all notes
+        [HttpGet]
+        public async Task<IActionResult> GetAllNotes()
         {
-            var matchedNote = await _context.Notes
-                .Include(n => n.NoteTags)
-                .ThenInclude(nt => nt.Tag)
-                .FirstOrDefaultAsync(n => n.Id == request.Id);
+            var notes = await _context.Notes.ToListAsync();
 
-            if (matchedNote == null)
+            var response = notes.Select(n => NoteMappers.ToNoteResponse(n)).ToList();
+            response.ForEach(r => r.Tags = _context.NoteTags
+                .Where(nt => nt.NoteId == r.Id)
+                .Select(nt => nt.Tag)
+                .Select(t => new DTOs.Responses.TagResponse { Id = t.Id, TagName = t.TagName })
+                .ToList());
+            return Ok(response);
+        }
+
+        // archive/unarchive a note
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> ArchiveUnarchiveNote([FromBody] Guid noteId)
+        {
+            var note = await _context.Notes.FindAsync(noteId);
+            if ( note == null)
             {
-                return NotFound("No note with this id is found");
+                return NotFound("No matched note found.");             
+            }
+            note.IsArchived = !note.IsArchived;
+            await _context.SaveChangesAsync();
+            return Ok(NoteMappers.ToNoteResponse(note));
+        }
+        
+        // delete a note
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteNote ([FromBody] Guid noteId)
+        {
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
+            {
+                return NotFound("No matched note found.");
+            }
+            _context.Notes.Remove(note);
+            await _context.SaveChangesAsync();
+            return Ok("Note deleted successfully.");
+        }
+
+        // add a tag to a note
+        [HttpPost("{id}/tags/add")]
+        public async Task<IActionResult> AddTag([FromBody] TagCreateRequest newTag, [FromRoute] Guid noteId)
+        {
+            // find matched note
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
+            {
+                return NotFound("No matched note found.");
             }
 
-            matchedNote.Title = request.Title;
-            matchedNote.Content = request.Content;
-
-            // Get existing tags from the database
-            var existingTags = await _context.Tags
-                .Where(t => request.Tags.Select(rt => rt.TagName.ToLower()).Contains(t.TagName.ToLower()))
-                .ToListAsync();
-
-            // Find new tags that need to be created
-            var newTags = request.Tags
-                .Where(rt => !existingTags.Any(et => et.TagName.ToLower() == rt.TagName.ToLower()))
-                .Select(rt => new Tag { TagName = rt.TagName })
-                .ToList();
-
-            if (newTags.Any())
+            // check if the tag already exists
+            var existingTag = await _context.Tags.FirstOrDefaultAsync(t => t.TagName.ToLower() == newTag.TagName.ToLower());
+            if (existingTag == null)
             {
-                _context.Tags.AddRange(newTags);
+                var tag = new Tag { TagName = newTag.TagName };
+                _context.Tags.Add(tag);
                 await _context.SaveChangesAsync();
-                existingTags.AddRange(newTags); // Ensure new tags are included
+                existingTag = tag;
             }
-
-            // Decide which tags to remove
-            var requestTagNames = request.Tags.Select(rt => rt.TagName.ToLower()).ToHashSet();
-            var noteTagsToRemove = matchedNote.NoteTags
-                .Where(nt => !requestTagNames.Contains(nt.Tag.TagName.ToLower()))
-                .ToList();
-
-            if (noteTagsToRemove.Any())
-            {
-                _context.NoteTags.RemoveRange(noteTagsToRemove);
-            }
-
-            // Find which tags are missing from the current note
-            var currentTagNames = matchedNote.NoteTags.Select(nt => nt.Tag.TagName.ToLower()).ToHashSet();
-            var noteTagsToAdd = existingTags
-                .Where(tag => !currentTagNames.Contains(tag.TagName.ToLower()))
-                .Select(tag => new NoteTag
-                {
-                    NoteId = matchedNote.Id,
-                    TagId = tag.Id
-                })
-                .ToList();
-
-            if (noteTagsToAdd.Any())
-            {
-                _context.NoteTags.AddRange(noteTagsToAdd);
-            }
-
-            matchedNote.UpdatedAt = DateTime.UtcNow;
-
+            
+            // add the note-tag connection to the database
+            var notTag = new NoteTag { NoteId = noteId, TagId = existingTag.Id };
+            _context.NoteTags.Add(notTag);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(NoteMappers.ToNoteResponse(note));
         }
 
-
-
-        // archive or unarchive a note
-        [HttpPut("archive/{isArchiving}/{noteId}")]
-        public async Task<IActionResult> ArchiveOrUnarchive([FromRoute] bool isArchiving, Guid noteId)
+        // remove a tag from a note
+        [HttpDelete("{id}/tags/remove")]
+        public async Task<IActionResult> RemoveTag([FromBody] TagCreateRequest tag, [FromRoute] Guid noteId)
         {
-            var matchedNote = await _context.Notes.FirstOrDefaultAsync(n => n.Id == noteId);
-            if (matchedNote == null)
+            // find matched note
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
             {
-                return NotFound("No note with this ID was found.");
+                return NotFound("No matched note found.");
             }
 
-            if (isArchiving == matchedNote.IsArchived)
+            // check if the tag already exists
+            var existingTag = await _context.Tags.FirstOrDefaultAsync(t => t.TagName.ToLower() == tag.TagName.ToLower());
+            if (existingTag == null)
             {
-                return BadRequest(isArchiving ? "Note is already archived." : "Note is already unarchived.");
+                return NotFound("No matched tag found.");
             }
 
-            matchedNote.IsArchived = isArchiving;
+            // remove the note-tag connection from the database
+            var noteTag = await _context.NoteTags.FirstOrDefaultAsync(nt => nt.NoteId == noteId && nt.TagId == existingTag.Id);
+            if (noteTag == null)
+            {
+                return BadRequest("No matched note-tag connection found.");
+            }
+            _context.NoteTags.Remove(noteTag);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(NoteMappers.ToNoteResponse(note));
         }
+
+        // get a note by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetNoteById([FromRoute] Guid noteId)
+        {
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
+            {
+                return NotFound("No matched note found.");
+            }
+
+            var response = NoteMappers.ToNoteResponse(note);
+            response.Tags = _context.NoteTags
+                .Where(nt => nt.NoteId == noteId)
+                .Select(nt => nt.Tag)
+                .Select(t => new DTOs.Responses.TagResponse { Id = t.Id, TagName = t.TagName })
+                .ToList();
+            return Ok(response);
+        }
+
+        // update a note title
+        [HttpPatch("{id}/title")]
+        public async Task<IActionResult> UpdateNoteTitle([FromBody] NoteCreateRequest request, [FromRoute] Guid noteId)
+        {
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
+            {
+                return NotFound("No matched note found.");
+            }
+
+            note.Title = request.Title;
+            await _context.SaveChangesAsync();
+            return Ok(NoteMappers.ToNoteResponse(note));
+        }
+
+        // update a note content
+        [HttpPatch("{id}/content")]
+        public async Task<IActionResult> UpdateNoteContent([FromBody] NoteCreateRequest request, [FromRoute] Guid noteId)
+        {
+            var note = await _context.Notes.FindAsync(noteId);
+            if (note == null)
+            {
+                return NotFound("No matched note found.");
+            }
+
+            note.Content = request.Content;
+            await _context.SaveChangesAsync();
+            return Ok(NoteMappers.ToNoteResponse(note));
+        }
+
+        // create a draft (draft controller)        
+        // get all drafts (draft controller)
+        // delete the draft and save it as a note (draft controller)
 
     }
 }

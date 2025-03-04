@@ -31,12 +31,17 @@ namespace NotesBackend.Helpers
             return note;
         }
 
-        public static Note FromUpdateReqToNoteModel(NoteUpdateRequest request)
+        public static NoteResponse ToNoteResponse (Note request)
         {
-            Note note = new Note
+
+           NoteResponse note = new NoteResponse
             {
+                Id = request.Id,
                 Title = request.Title,
                 Content = request.Content,
+                CreatedAt = request.CreatedAt,
+                UpdatedAt = request.UpdatedAt,
+                IsArchived = request.IsArchived,
             };
             return note;
         }
