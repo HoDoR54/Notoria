@@ -23,40 +23,74 @@ namespace NotesBackend.Controllers
             _jwtHelper = jwtHelper;
         }
 
-        // Update Account Details
-        [HttpPut("update/{updateField}")]
-        public async Task<IActionResult> UpdateAcc([FromBody] UserUpdateRequest request, [FromRoute] string memberToUpdate)
+        // update account name
+        [HttpPut("{id}/name")]
+        public async Task<IActionResult> UpdateName([FromRoute] Guid id, [FromBody] UserNameUpdateRequest request)
         {
-            var matchedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id ==  request.Id);
-            if (matchedUser == null)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
             {
-                return NotFound("User not found");
+                return NotFound();
             }
 
-            string updateParameter = memberToUpdate.ToLower();
-
-            switch (updateParameter)
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
-                case "name":
-                    matchedUser.Name = request.Name;
-                    break;
-                case "email":
-                    matchedUser.Email = request.Email;
-                    break;
-                case "password": 
-                    matchedUser.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
-                    break;
-                case "profilePic":
-                    matchedUser.ProfilePicUrl = request.ProfilePicUrl;
-                    break;
-                default:
-                    return BadRequest("Invalid parameter.");
+                return BadRequest("Wrong password");
             }
 
-            matchedUser.UpdatedAt = DateTime.UtcNow;
+            user.Name = request.Name;
             await _context.SaveChangesAsync();
+            return Ok();
+        }
 
-            return Ok($"{updateParameter} updated succcessfully");
+        // update account mail
+        [HttpPut("{id}/mail")]
+        public async Task<IActionResult> UpdateMail([FromRoute] Guid id, [FromBody] UserMailUpdateRequest request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+            {
+                return BadRequest("Wrong password");
+            }
+
+            if (!ValidationHelper.ValidateEmail(request.Email))
+            {
+                return BadRequest("Invalid email");
+            }
+
+            user.Email = request.Email;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        // update account password
+        [HttpPut("{id}/password")]
+        public async Task<IActionResult> UpdatePassword([FromRoute] Guid id, [FromBody] UserPasswordUpdateRequest request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+            {
+                return BadRequest("Wrong password");
+            }
+
+            if (!ValidationHelper.ValidatePassword(request.NewPassword))
+            {
+                return BadRequest("Invalid password");
+            }
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

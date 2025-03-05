@@ -37,6 +37,12 @@ namespace NotesBackend.Controllers
                 return BadRequest("A user with this email already exists.");
             }
 
+            // validate data
+            if (!ValidationHelper.ValidateEmail(request.Email) || !ValidationHelper.ValidatePassword(request.Password))
+            {
+                return BadRequest("Invalid Request Data");
+            }
+
             // map the request to a user object
             var mappedUser = UserMappers.RegisterToUser(request);
 
