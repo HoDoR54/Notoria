@@ -21,7 +21,7 @@ export const fetchRegistrationData = async (
     const response = await axios.post(`${baseUrl}/register`, requestBody, {
       withCredentials: true,
     });
-    return response.data.valid && true;
+    return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error:", error.response?.data || error.message);

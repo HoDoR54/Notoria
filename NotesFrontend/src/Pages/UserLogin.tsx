@@ -32,7 +32,7 @@ const UserLogin = () => {
     console.log("Logged In...");
 
     reset();
-    fetchedData !== false && navigate("/");
+    navigate("/NotFound");
     fetchedData !== false && console.log("Routed to dashboard");
   };
 

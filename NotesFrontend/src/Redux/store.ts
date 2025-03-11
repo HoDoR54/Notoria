@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./slices/themeSlice";
 import uiReducer from "./slices/uiSlice";
 import currentUserReducer from "./slices/currentUserSlice";
+import currentScreenReducer from "./slices/currentScreen";
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
     ui: uiReducer,
     currentUser: currentUserReducer,
+    currentScreen: currentScreenReducer,
   },
 });
 

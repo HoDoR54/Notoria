@@ -1,12 +1,25 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/store";
+import { useEffect } from "react";
+import { setCurrentSize } from "../Redux/slices/currentScreen";
+import MobileLayout from "./MobileLayout";
+import DesktopLayout from "./DesktopLayout";
 
 const Dashboard = () => {
-  const { currentUser } = useSelector((state: RootState) => state.currentUser);
+  const dispatch = useDispatch();
+  const { isMobile } = useSelector((state: RootState) => state.currentScreen);
 
-  console.log("Dashboard received data:", currentUser);
+  useEffect(() => {
+    const handleResize = () => {
+      dispatch(setCurrentSize(window.innerWidth < 1024));
+    };
 
-  return <h1>Welcome, {currentUser?.name || "Guest"}!</h1>;
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [dispatch]);
+
+  return isMobile ? <MobileLayout /> : <DesktopLayout />;
 };
 
 export default Dashboard;
