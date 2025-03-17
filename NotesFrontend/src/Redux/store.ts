@@ -3,6 +3,7 @@ import themeReducer from "./slices/themeSlice";
 import uiReducer from "./slices/uiSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import currentScreenReducer from "./slices/currentScreen";
+import languageReducer from "./slices/languageSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     ui: uiReducer,
     currentUser: currentUserReducer,
     currentScreen: currentScreenReducer,
+    language: languageReducer,
   },
 });
 

@@ -1,5 +1,5 @@
 import Header from "../Components/Header";
-import LeftBar from "../Components/LeftBar";
+import Menu from "../Components/Menu";
 import Preview from "../Components/Preview";
 import Note from "../Components/Note";
 
@@ -9,8 +9,8 @@ const DesktopLayout = () => {
       <Header />
 
       {/* main container */}
-      <section className="flex-1 bg-gray-300 grid grid-cols-12">
-        <LeftBar />
+      <section className="flex-1 grid grid-cols-12">
+        <Menu />
         <Preview />
         <Note />
       </section>

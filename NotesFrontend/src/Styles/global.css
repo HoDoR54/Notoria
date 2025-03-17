@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "KSK";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/Kyal-Sin-Khant.ttf") format("truetype");
+}
+/* 
+body {
+  font-family: "KSK";
+} */

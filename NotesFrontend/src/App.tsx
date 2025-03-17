@@ -5,6 +5,8 @@ import UserRegistration from "./Pages/UserRegistration";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { RootState } from "./Redux/store";
 import Dashboard from "./Pages/Dashboard";
+import Note from "./Components/Note";
+import MobileHome from "./Components/MobileHome";
 
 const App = () => {
   const { loading } = useSelector((state: RootState) => state.ui);
@@ -24,7 +26,10 @@ const App = () => {
           <Route path="/registration" element={<UserRegistration />} />
           <Route path="/login" element={<UserLogin />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Dashboard />}>
+            <Route path="note" element={<Note />} />
+            <Route path="/" element={<MobileHome />} />
+          </Route>
         </Routes>
       </section>
     </Router>
