@@ -1,21 +1,36 @@
-// import { useSelector } from "react-redux";
-// import { RootState } from "../Redux/store";
-
+import { useSelector } from "react-redux";
 import Button from "./Button";
+import { RootState } from "../Redux/store";
 
 const Controls = () => {
-  // const { isMobile } = useSelector((state: RootState) => state.currentScreen);
-
+  const { currentLanguage } = useSelector((state: RootState) => state.language);
   return (
-    <div className="mt-auto min-w-full flex justify-end bg-white gap-3 px-3 py-5 border-t border-gray-300 shadow">
-      <Button primary={false}>
-        <i className="fa-solid fa-trash mr-2"></i>
-        Discard
-      </Button>
-      <Button primary={true}>
-        <i className="fa-solid fa-save mr-2"></i>
-        Save changes
-      </Button>
+    <div className="py-3 px-5 flex justify-between shadow border-t border-gray-300">
+      <div className="flex gap-2">
+        <Button
+          primary={false}
+          additionalStyling="px-5"
+          icon="fa-solid fa-trash"
+        >
+          {currentLanguage === "E" ? "Delete" : "ဖျက်မယ်"}
+        </Button>
+        <Button
+          primary={true}
+          additionalStyling="px-5"
+          icon="fa-solid fa-upload"
+        >
+          {currentLanguage === "E" ? "Save" : "သိမ်းမယ်"}
+        </Button>
+      </div>
+      <div>
+        <Button
+          primary={false}
+          additionalStyling="px-5"
+          icon="fa-solid fa-download"
+        >
+          {currentLanguage === "E" ? "Download" : "ဒေါင်းလုဒ်ဆွဲမယ်"}
+        </Button>
+      </div>
     </div>
   );
 };

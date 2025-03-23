@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/store";
 import { useEffect } from "react";
 import { setCurrentSize } from "../Redux/slices/currentScreen";
-import MobileLayout from "./MobileLayout";
-import DesktopLayout from "./DesktopLayout";
+import MobileLayout from "../Layouts/MobileLayout";
+import DesktopLayout from "../Layouts/DesktopLayout";
 
 const Dashboard = () => {
   const dispatch = useDispatch();

@@ -9,7 +9,7 @@ interface SideBarItemProps {
 const SideBarItem: React.FC<SideBarItemProps> = ({ icon, text, onClick }) => {
   return (
     <li
-      className="hover:bg-blue-100 rounded-md pl-3 py-3 cursor-pointer"
+      className="hover:bg-blue-100 rounded-md pl-3 py-3 cursor-pointer relative"
       onClick={() => onClick()}
     >
       <i className={`${icon} mr-2 text-blue-950`}></i>

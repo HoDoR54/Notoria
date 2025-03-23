@@ -1,9 +1,10 @@
 import React from "react";
 
 interface ButtonProps {
-  children: React.ReactNode; // Accepts anything React can render
+  children?: React.ReactNode;
   additionalStyling?: string;
   primary: boolean;
+  icon?: string;
   type?: "button" | "submit" | "reset";
 }
 
@@ -11,6 +12,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   additionalStyling,
   primary,
+  icon,
   type,
 }) => {
   return (
@@ -22,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
           : "bg-gray-200 text-blue-950 border-1"
       } ${additionalStyling}`}
     >
+      {icon && <i className={`${icon} ${children && "mr-2"}`}></i>}
       {children}
     </button>
   );

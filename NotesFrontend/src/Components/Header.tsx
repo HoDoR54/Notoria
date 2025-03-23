@@ -7,11 +7,11 @@ const Header = () => {
   const { currentLanguage } = useSelector((state: RootState) => state.language);
 
   return (
-    <div
+    <header
       id="header"
       className="flex min-w-screen px-3 py-5 justify-between shadow z-50 border-b-1 border-gray-300"
     >
-      <h1 className="text-blue-950 text-xl font-bold">Notoria</h1>
+      <h1 className="text-blue-950 text-2xl font-bold">Notoria</h1>
       <div className="flex gap-3 items-center justify-center">
         <div
           onClick={() => dispatch(toggleLanguage())}
@@ -24,7 +24,7 @@ const Header = () => {
           <i className="fa-solid fa-gear text-xl mr-3 text-blue-950"></i>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

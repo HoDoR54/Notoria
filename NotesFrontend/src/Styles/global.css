@@ -7,7 +7,10 @@
   font-display: swap;
   src: url("/fonts/Kyal-Sin-Khant.ttf") format("truetype");
 }
-/* 
-body {
-  font-family: "KSK";
-} */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  scrollbar-width: none; /* Firefox */
+}
