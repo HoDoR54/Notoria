@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import Button from "./Button";
-import { RootState } from "../Redux/store";
+import Button from "../Reusable/Button";
+import { RootState } from "../../Redux/store";
 
 const Controls = () => {
   const { currentLanguage } = useSelector((state: RootState) => state.language);
@@ -17,7 +17,7 @@ const Controls = () => {
         <Button
           primary={true}
           additionalStyling="px-5"
-          icon="fa-solid fa-upload"
+          icon="fa-regular fa-file"
         >
           {currentLanguage === "E" ? "Save" : "သိမ်းမယ်"}
         </Button>

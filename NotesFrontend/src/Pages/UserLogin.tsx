@@ -1,12 +1,12 @@
-import FormWrapper from "../Components/FormWrapper";
+import FormWrapper from "../Components/Reusable/FormWrapper";
 import { LoginRequest } from "../Types/userFormTypes";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginReqValidationSchema } from "../Services/formAuth";
-import InputField from "../Components/InputField";
+import InputField from "../Components/Reusable/InputField";
 import { useDispatch } from "react-redux";
 import { fetchLoginData } from "../Services/fetchAuth";
-import Button from "../Components/Button";
+import Button from "../Components/Reusable/Button";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 

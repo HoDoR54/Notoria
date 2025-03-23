@@ -1,5 +1,5 @@
 import CategoryFilters from "./CategoryFilters";
-import SideBar from "./SideBar";
+import SideBar from "../Reusable/SideBar";
 import TagFilters from "./TagFilters";
 
 const Menu = () => {

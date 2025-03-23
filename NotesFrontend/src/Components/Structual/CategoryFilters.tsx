@@ -1,7 +1,7 @@
-import SideBarItem from "./SideBarItem";
-import SideBarBlock from "./SideBarBlock";
+import SideBarItem from "../Reusable/SideBarItem";
+import SideBarBlock from "../Reusable/SideBarBlock";
 import { useSelector } from "react-redux";
-import { RootState } from "../Redux/store";
+import { RootState } from "../../Redux/store";
 
 const CategoryFilters = () => {
   const { currentLanguage } = useSelector((state: RootState) => state.language);
@@ -16,10 +16,10 @@ const CategoryFilters = () => {
       <SideBarItem
         text={currentLanguage === "E" ? "All" : "အားလုံး"}
         onClick={() => handleFilter()}
-        icon="fa-solid fa-note-sticky"
+        icon="fa-solid fa-house"
       />
       <SideBarItem
-        text={currentLanguage === "E" ? "Archived" : "အထွေကြီးမှတ်စုများ"}
+        text={currentLanguage === "E" ? "Archived" : "သိမ်းဆည်းမှတ်စုများ"}
         onClick={() => handleFilter()}
         icon="fa-solid fa-archive"
       />

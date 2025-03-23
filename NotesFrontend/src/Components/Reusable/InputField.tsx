@@ -1,6 +1,6 @@
 import React from "react";
 import { UseFormRegister, FieldError } from "react-hook-form";
-import { RegistrationRequest } from "../Types/userFormTypes";
+import { RegistrationRequest } from "../../Types/userFormTypes";
 
 interface InputFieldProps {
   label: string;

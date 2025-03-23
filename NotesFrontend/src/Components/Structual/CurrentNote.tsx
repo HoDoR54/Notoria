@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Controls from "./Controls";
-import { RootState } from "../Redux/store";
+import { RootState } from "../../Redux/store";
 
 interface TempNoteType {
   title: string;
@@ -53,7 +53,7 @@ const CurrentNote = () => {
         <div className="flex flex-col flex-1">
           <div className="flex items-center pt-3 pb-5 px-2 relative">
             {/* note details */}
-            <div className="flex flex-col max-w-fit pr-10 relative gap-2 group">
+            <div className="flex flex-col max-w-fit pr-10 relative gap-2 group pl-5">
               <h1 className="text-2xl font-bold">{currentNote.title}</h1>
               <span className="text-sm text-gray-500">
                 <i className="fa-solid fa-tags mr-2"></i>
@@ -80,9 +80,8 @@ const CurrentNote = () => {
             name=""
             id=""
             className="resize-none flex-1 focus:outline-none py-3 px-5"
-          >
-            {currentNote.body}
-          </textarea>
+            value={currentNote.body}
+          ></textarea>
         </div>
       </div>
 

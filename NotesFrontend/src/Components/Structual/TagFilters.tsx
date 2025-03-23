@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import SideBarBlock from "./SideBarBlock";
-import { RootState } from "../Redux/store";
-import SideBarItem from "./SideBarItem";
+import SideBarBlock from "../Reusable/SideBarBlock";
+import { RootState } from "../../Redux/store";
+import SideBarItem from "../Reusable/SideBarItem";
 
 const tags = ["tag1", "tag2", "tag3"];
 

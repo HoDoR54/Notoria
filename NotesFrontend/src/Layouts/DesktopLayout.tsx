@@ -1,7 +1,7 @@
-import CurrentNote from "../Components/CurrentNote";
-import Header from "../Components/Header";
-import Menu from "../Components/Menu";
-import Notes from "../Components/Notes";
+import CurrentNote from "../Components/Structual/CurrentNote";
+import Header from "../Components/Structual/Header";
+import Menu from "../Components/Structual/Menu";
+import Notes from "../Components/Structual/Notes";
 
 const DesktopLayout = () => {
   return (

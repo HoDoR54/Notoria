@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import PreviewItem from "./PreviewItem";
-import SideBarBlock from "./SideBarBlock";
-import { RootState } from "../Redux/store";
+import PreviewItem from "../Reusable/PreviewItem";
+import SideBarBlock from "../Reusable/SideBarBlock";
+import { RootState } from "../../Redux/store";
 
 const notes = ["note 1", "note 2", "note 3", "note 4", "note 5"];
 

@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
-import Button from "./Button";
-import SideBar from "./SideBar";
-import SideBarBlock from "./SideBarBlock";
-import { RootState } from "../Redux/store";
+import Button from "../Reusable/Button";
+import SideBar from "../Reusable/SideBar";
+import SideBarBlock from "../Reusable/SideBarBlock";
+import { RootState } from "../../Redux/store";
 import Preview from "./Preview";
 
 const Notes = () => {

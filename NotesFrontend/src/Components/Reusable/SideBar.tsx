@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import useResize from "../Hooks/useResize";
+import useResize from "../../Hooks/useResize";
 
 interface SideBarProps {
   minWidth: number;
