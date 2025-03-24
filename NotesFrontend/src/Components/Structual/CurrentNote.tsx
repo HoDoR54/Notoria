@@ -20,6 +20,7 @@ let currentNote: TempNoteType | undefined = {
 
 const CurrentNote = () => {
   const { currentLanguage } = useSelector((state: RootState) => state.language);
+  const { isMobile } = useSelector((state: RootState) => state.currentScreen);
 
   if (!currentNote) {
     return (
@@ -53,14 +54,24 @@ const CurrentNote = () => {
         <div className="flex flex-col flex-1">
           <div className="flex items-center pt-3 pb-5 px-2 relative">
             {/* note details */}
-            <div className="flex flex-col max-w-fit pr-10 relative gap-2 group pl-5">
-              <h1 className="text-2xl font-bold">{currentNote.title}</h1>
-              <span className="text-sm text-gray-500">
+            <div
+              className={`flex flex-col pr-10 relative gap-2 group pl-5 ${
+                isMobile ? "w-full" : "max-w-fit"
+              }`}
+            >
+              <h1 className={`font-bold ${isMobile ? "text-xl" : "text-2xl"}`}>
+                {currentNote.title}
+              </h1>
+              <span
+                className={`text-gray-500 ${isMobile ? "text-xs" : "text-sm"}`}
+              >
                 <i className="fa-solid fa-tags mr-2"></i>
                 {currentLanguage === "E" ? "Tags: " : "တက်ဂ်များ: "}{" "}
                 {currentNote.tags.join(", ")}
               </span>
-              <span className="text-sm text-gray-500">
+              <span
+                className={`text-gray-500 ${isMobile ? "text-xs" : "text-sm"}`}
+              >
                 <i className="fa-regular fa-clock mr-2"></i>
                 {currentLanguage === "E"
                   ? "last updated on: "
@@ -68,8 +79,21 @@ const CurrentNote = () => {
                 {currentNote.updatedAt.toDateString()}
               </span>
 
-              <div className="absolute right-1 top-1">
-                <i className="text-blue-950 fa-solid fa-pen-to-square opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"></i>
+              <div className="absolute right-1 top-1 flex gap-2">
+                <i
+                  className={`text-blue-950 fa-solid fa-pen-to-square transition-opacity duration-200 cursor-pointer ${
+                    isMobile
+                      ? "opacity-80 hover:opacity-100"
+                      : "group-hover:opacity-100 opacity-0"
+                  }`}
+                ></i>
+                <i
+                  className={`text-blue-950 fa-solid fa-download transition-opacity duration-200 cursor-pointer ${
+                    isMobile
+                      ? "opacity-80 hover:opacity-100"
+                      : "group-hover:opacity-100 opacity-0"
+                  }`}
+                ></i>
               </div>
             </div>
 
@@ -79,7 +103,9 @@ const CurrentNote = () => {
           <textarea
             name=""
             id=""
-            className="resize-none flex-1 focus:outline-none py-3 px-5"
+            className={`resize-none flex-1 focus:outline-none py-3 px-5 ${
+              isMobile && "text-sm"
+            }`}
             value={currentNote.body}
           ></textarea>
         </div>

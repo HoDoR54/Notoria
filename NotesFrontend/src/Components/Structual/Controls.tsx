@@ -4,9 +4,15 @@ import { RootState } from "../../Redux/store";
 
 const Controls = () => {
   const { currentLanguage } = useSelector((state: RootState) => state.language);
+  const { isMobile } = useSelector((state: RootState) => state.currentScreen);
+
   return (
-    <div className="py-3 px-5 flex justify-between shadow border-t border-gray-300">
-      <div className="flex gap-2">
+    <div
+      className={`py-3 px-5 flex justify-between shadow border-t border-gray-300 ${
+        isMobile && "flex-col gap-2"
+      }`}
+    >
+      <div className={`flex gap-2 ${isMobile && "w-full justify-end"}`}>
         <Button
           primary={false}
           additionalStyling="px-5"
@@ -22,7 +28,7 @@ const Controls = () => {
           {currentLanguage === "E" ? "Save" : "သိမ်းမယ်"}
         </Button>
       </div>
-      <div>
+      <div className={`${isMobile && "hidden"}`}>
         <Button
           primary={false}
           additionalStyling="px-5"

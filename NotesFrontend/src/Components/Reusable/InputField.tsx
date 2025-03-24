@@ -1,37 +1,23 @@
 import React from "react";
-import { UseFormRegister, FieldError } from "react-hook-form";
-import { RegistrationRequest } from "../../Types/userFormTypes";
 
 interface InputFieldProps {
-  label: string;
-  type: string;
-  id: keyof RegistrationRequest;
-  register: UseFormRegister<any>;
-  error?: FieldError;
-  placeholder: string;
+  placeholder?: string;
+  label?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
-  label,
-  type,
-  id,
-  register,
-  error,
-  placeholder,
-}) => {
+const InputField: React.FC<InputFieldProps> = ({ placeholder, label }) => {
   return (
-    <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="text-base font-thin">
-        {label}
-      </label>
+    <div className="relative flex max-w-fit rounded-full">
       <input
-        type={type}
-        id={id}
+        type="text"
         placeholder={placeholder}
-        {...register(id)}
-        className="border-1 rounded-md px-3 py-2 pl-3 min-w-[300px]"
-      />
-      {error && <p className="text-red-500">{error.message}</p>}
+        name={label}
+        className="pl-10 py-1 outline-1 box-border min-w-[250px] rounded-full"
+      ></input>
+
+      <div className="flex items-center justify-center px-2 pt-0.5 absolute left-0 top-0 bottom-0">
+        <i className="fa-solid fa-search text-gray-600"></i>
+      </div>
     </div>
   );
 };
